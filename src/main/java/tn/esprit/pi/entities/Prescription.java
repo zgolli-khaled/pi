@@ -16,7 +16,7 @@ public class Prescription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID_PRES")
+    @Column(name="ID")
     private Long idPres;
 
     @Temporal(TemporalType.DATE)
@@ -26,4 +26,8 @@ public class Prescription {
 
     @Column(name ="DESCRIPTION")
     private String description;
+
+
+    @ManyToOne
+    private User user;
 }

@@ -15,7 +15,7 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID_PAY")
+    @Column(name="ID")
     private Long idPay;
 
 
@@ -26,6 +26,9 @@ public class Payment {
 
     @Column(name ="MONTANT")
     private double montant;
+
+    @ManyToOne
+    private User user;
 
 
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -16,7 +17,7 @@ import java.util.Date;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_USER")
+    @Column(name = "ID")
     private Long idUser;
 
     @Column(name = "NOM")
@@ -45,6 +46,37 @@ public class User implements Serializable {
 
     @Column(nullable= true ,name = "SEPECIALITE")
     private String specialite;
+
+
+
+    @ManyToOne
+    private Role role;
+
+    @OneToMany(mappedBy="user")
+    private Set<Payment> Payments;
+
+    @OneToMany(mappedBy="user")
+    private Set<Appointment> Appointments;
+
+
+    @OneToOne(mappedBy = "user")
+    private Chambre chambre;
+
+    @OneToMany(mappedBy = "user")
+    private  Set<Reclamation> Reclamations;
+
+
+    @ManyToOne
+    private Pharmacie pharmacie;
+
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private DossierMedical dossierMedical;
+
+
+    @OneToMany(cascade = CascadeType.REMOVE ,mappedBy = "user")
+    private Set<Prescription> Prescriptions;
+
 
 
 

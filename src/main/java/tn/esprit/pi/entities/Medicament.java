@@ -14,10 +14,14 @@ public class Medicament {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID_MED")
+    @Column(name="ID")
     private Long idMed;
 
 
     @Column(name ="NOM")
     private  String nom;
+
+
+    @ManyToOne
+    private Pharmacie pharmacie;
 }

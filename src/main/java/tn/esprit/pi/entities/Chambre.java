@@ -13,7 +13,7 @@ public class Chambre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID_CHAMBRE")
+    @Column(name="ID")
     private Long idChambre;
 
 
@@ -27,4 +27,11 @@ public class Chambre {
 
     @Column(name ="STATUS")
     private String status;
+
+    @OneToOne
+    private User user;
+
+
+    @ManyToOne
+    private Service service;
 }

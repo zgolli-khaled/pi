@@ -35,6 +35,9 @@ public class DossierMedical {
     @Column(name ="ALLERGIE")
     private String allergie;
 
+    @OneToOne
+    private User user;
+
 
 
 

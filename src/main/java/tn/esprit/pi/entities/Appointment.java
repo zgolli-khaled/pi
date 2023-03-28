@@ -14,7 +14,7 @@ import java.util.Date;
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_APP")
+    @Column(name = "ID")
     private Long idApp;
 
     @Temporal(TemporalType.DATE)
@@ -29,6 +29,10 @@ public class Appointment {
     @Temporal(TemporalType.TIME)
     @Column(name = "DATE_FIN")
     private Date dateFin;
+
+
+    @ManyToOne
+    private User user;
 
 
 

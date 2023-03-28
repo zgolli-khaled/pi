@@ -15,7 +15,7 @@ public class Reclamation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID_REC")
+    @Column(name="ID")
     private Long idRec;
 
     @Column(name ="NOM")
@@ -28,4 +28,8 @@ public class Reclamation {
     @JsonFormat(pattern="yyy-mm-dd")
     @Column(name = "DATE")
     private Date date;
+
+
+    @ManyToOne
+    private User user;
 }
