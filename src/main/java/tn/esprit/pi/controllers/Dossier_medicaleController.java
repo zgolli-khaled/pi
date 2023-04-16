@@ -1,0 +1,81 @@
+package tn.esprit.pi.controllers;
+
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import tn.esprit.pi.controllers.Api.DossierApi;
+import tn.esprit.pi.entities.Dossier_Medical;
+import tn.esprit.pi.services.Dossier_MedicalService;
+
+import java.util.List;
+
+@RestController
+@Slf4j
+public class Dossier_medicaleController implements DossierApi {
+
+    @Autowired
+    Dossier_MedicalService dossier_MedicalService;
+
+    private final Dossier_MedicalService dossier;
+
+    @Autowired
+    public Dossier_medicaleController(Dossier_MedicalService dossier) {
+        this.dossier = dossier;
+    }
+
+
+
+    @Override
+    public Dossier_Medical save(Dossier_Medical dossier_medical) {
+        return dossier.savewithPatient(dossier_medical);
+    }
+
+    @Override
+    public Dossier_Medical saveP(Dossier_Medical dossier_medical, Long id) {
+        return dossier.SaveWithExistPatient(dossier_medical,id);
+    }
+
+
+    @Override
+    public List<Dossier_Medical> findAll() {
+        return dossier.findAll();
+    }
+
+    @Override
+    public Dossier_Medical findById(Long id) {
+        return dossier.findById(id);
+    }
+
+    @Override
+    public void delete(Long id) {
+    dossier.delete(id);
+    }
+
+    @Override
+    public ResponseEntity<Dossier_Medical> updatedossier(@PathVariable Long id, @RequestBody Dossier_Medical dossier){
+        Dossier_Medical dossier0 = dossier_MedicalService.findById(id);
+         Long id_patient = dossier0.getUser().getId();
+
+
+        if(dossier0 == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            dossier0.setMotif_admission(dossier.getMotif_admission());
+            dossier0.setService_hospitalier(dossier.getService_hospitalier());
+            dossier0.setAntecedents(dossier.getAntecedents());
+            dossier0.setDatecreation(dossier.getDatecreation());
+
+            return new ResponseEntity<>(dossier_MedicalService.SaveWithExistPatient(dossier0,id_patient), HttpStatus.CREATED);
+        }catch(DataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
