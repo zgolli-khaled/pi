@@ -19,46 +19,46 @@ import java.util.List;
 @Slf4j
 public class Dossier_medicaleController implements DossierApi {
 
-    @Autowired
-    Dossier_MedicalService dossier_MedicalService;
 
-    private final Dossier_MedicalService dossier;
+
+    private final Dossier_MedicalService dossier_MedicalService;
 
     @Autowired
-    public Dossier_medicaleController(Dossier_MedicalService dossier) {
-        this.dossier = dossier;
+    public Dossier_medicaleController(Dossier_MedicalService dossier_MedicalService) {
+        this.dossier_MedicalService = dossier_MedicalService;
     }
 
 
 
     @Override
     public Dossier_Medical save(Dossier_Medical dossier_medical) {
-        return dossier.savewithPatient(dossier_medical);
+        return dossier_MedicalService.savewithPatient(dossier_medical);
     }
 
     @Override
     public Dossier_Medical saveP(Dossier_Medical dossier_medical, Long id) {
-        return dossier.SaveWithExistPatient(dossier_medical,id);
+        return dossier_MedicalService.SaveWithExistPatient(dossier_medical,id);
     }
 
 
     @Override
     public List<Dossier_Medical> findAll() {
-        return dossier.findAll();
+        return dossier_MedicalService.findAll();
     }
 
     @Override
     public Dossier_Medical findById(Long id) {
-        return dossier.findById(id);
+
+        return dossier_MedicalService.findById(id);
     }
 
     @Override
     public void delete(Long id) {
-    dossier.delete(id);
+    dossier_MedicalService.delete(id);
     }
 
     @Override
-    public ResponseEntity<Dossier_Medical> updatedossier(@PathVariable Long id, @RequestBody Dossier_Medical dossier){
+    public ResponseEntity<Dossier_Medical> updatedossier( Long id,  Dossier_Medical dossier){
         Dossier_Medical dossier0 = dossier_MedicalService.findById(id);
          Long id_patient = dossier0.getUser().getId();
 

@@ -1,6 +1,7 @@
 package tn.esprit.pi.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Date;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,15 +26,15 @@ public class Prescription implements Serializable {
 
     private String Title;
 
-    private LocalDate dateprescription;
-
-
-    private LocalTime heureprescription;
+    @Temporal(TemporalType.TIMESTAMP )
+    private Date datecreation;
 
     private  String content;
-    @JsonIgnore
+
     @ManyToOne
-    @JoinColumn(name = "Dossier_Medical_id" , nullable = false)
+    @JoinColumn(name = "Dossier_Medical_id" )
+    @JsonIgnoreProperties("prescriptions")
     private Dossier_Medical dossier_medical;
+
 
 }

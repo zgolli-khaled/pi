@@ -37,8 +37,9 @@ public class Dossier_Medical implements Serializable {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @JsonIgnore
+
     @OneToMany(mappedBy = "dossier_medical", cascade = CascadeType.ALL)
     private List<Prescription> prescriptions;
+
 
 }
