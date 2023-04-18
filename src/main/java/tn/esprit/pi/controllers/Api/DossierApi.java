@@ -18,11 +18,21 @@ public interface DossierApi {
 
     @GetMapping("/dossier/list")
     List<Dossier_Medical> findAll();
+
     @GetMapping(value = "/dossier/{id}")
     Dossier_Medical findById(@PathVariable("id") Long id);
+    @GetMapping(value = "/dossier/FindByPatientName/{Patient_Name}")
+    List<Dossier_Medical> find_By_Patient_Name(@PathVariable("Patient_Name") String Patient_Name );
+
+    @GetMapping(value = "/dossier/Search/{keyword}")
+    List<Dossier_Medical> Search(@PathVariable("keyword") String keyword );
+
     @DeleteMapping("/dossier/{id}" )
     void delete(@PathVariable("id") Long id);
-    @PutMapping(value = "/dossier/update/{id}",consumes =MediaType.APPLICATION_JSON_VALUE , produces =MediaType.APPLICATION_JSON_VALUE )
 
+    @PutMapping(value = "/dossier/update/{id}",consumes =MediaType.APPLICATION_JSON_VALUE , produces =MediaType.APPLICATION_JSON_VALUE )
     ResponseEntity<Dossier_Medical> updatedossier(@PathVariable Long id, @RequestBody Dossier_Medical dossier);
+
+
+
 }

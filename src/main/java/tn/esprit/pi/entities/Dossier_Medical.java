@@ -42,4 +42,9 @@ public class Dossier_Medical implements Serializable {
     private List<Prescription> prescriptions;
 
 
+    public String toSearchString() {
+        return motif_admission + " " + antecedents + " " + datecreation + " " +getUser().getFirst_name()+""
+                +getUser().getCIN()+getUser().getAdress()+getUser().getLast_name()+getUser().getPhone_nbr() /* other fields */ ;
+    }
+
 }

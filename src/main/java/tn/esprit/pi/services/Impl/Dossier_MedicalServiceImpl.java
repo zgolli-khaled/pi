@@ -8,6 +8,7 @@ import tn.esprit.pi.repositories.Dossier_MedicalRepository;
 import tn.esprit.pi.repositories.UserRepository;
 import tn.esprit.pi.services.Dossier_MedicalService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,6 +33,16 @@ public class Dossier_MedicalServiceImpl implements Dossier_MedicalService {
         }
         return null;
     }
+    @Override
+    public List<Dossier_Medical> find_By_Patient_Name(String patient_name) {
+        List<Dossier_Medical> dossierMedicals = new ArrayList<>();
+        for (Dossier_Medical dossierPatient : dossier_MedicalRepository.findAll()) {
+            if (dossierPatient.getUser().getFirst_name().equals(patient_name)) {
+                dossierMedicals.add(dossierPatient);
+            }
+        }
+        return dossierMedicals;
+    }
 
     @Override
     public Dossier_Medical savewithPatient(Dossier_Medical dossier_medical) {
@@ -53,5 +64,18 @@ public class Dossier_MedicalServiceImpl implements Dossier_MedicalService {
         Dossier_Medical dossier_medical = findById(id);
         dossier_MedicalRepository.delete(dossier_medical);
     }
+
+    public List<Dossier_Medical> Search(String keyword) {
+        List<Dossier_Medical> dossierMedicals = new ArrayList<>();
+        for (Dossier_Medical dossierMedical : dossier_MedicalRepository.findAll()) {
+            if (dossierMedical.toSearchString().toLowerCase().contains(keyword.toLowerCase())) {
+                dossierMedicals.add(dossierMedical);
+            }
+        }
+        return dossierMedicals;
+    }
+
+
+
 
 }

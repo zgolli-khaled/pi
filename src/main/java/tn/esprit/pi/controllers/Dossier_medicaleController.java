@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.pi.controllers.Api.DossierApi;
 import tn.esprit.pi.entities.Dossier_Medical;
@@ -51,6 +49,17 @@ public class Dossier_medicaleController implements DossierApi {
 
         return dossier_MedicalService.findById(id);
     }
+
+    @Override
+    public List<Dossier_Medical> find_By_Patient_Name(String Patient_Name) {
+        return dossier_MedicalService.find_By_Patient_Name(Patient_Name);
+    }
+
+    @Override
+    public List<Dossier_Medical> Search(String keyword) {
+        return dossier_MedicalService.Search(keyword);
+    }
+
 
     @Override
     public void delete(Long id) {
