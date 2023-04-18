@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import tn.esprit.pi.entities.Appointment;
 import tn.esprit.pi.repositories.AppointmentRepository;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -40,4 +42,32 @@ public class AppointmentService implements AppointmentInterfaceService {
         Appointment appointment = findById(id);
         appointmentRepository.delete(appointment);
     }
+
+    @Override
+    public List<Appointment> findAllByDate(Date date) {
+        return appointmentRepository.findAppointmentsByDateApp(date);
+    }
+
+    @Override
+    public List<Appointment> findAllByDateBefore(Double day) {
+        return appointmentRepository.findAppointmentsByDateBefore(day);
+    }
+
+    @Override
+    public int countAppointmen(Date day) {
+        return  appointmentRepository.countAppointmen( day);
+    }
+
+
+
+
+   /* @Override
+    public List<Appointment> findAllByDateBefore(Date date) {
+        return appointmentRepository.findAppointmentsByDateAppBefore(date);
+    }
+     /*
+    */
+
+
+
 }

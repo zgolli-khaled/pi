@@ -75,7 +75,8 @@ public class User implements Serializable {
     private Pharmacie pharmacie;
 
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE ,mappedBy = "user")
+    @JsonIgnore
     private DossierMedical dossierMedical;
 
 

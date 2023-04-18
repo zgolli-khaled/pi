@@ -8,7 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi.entities.Appointment;
 import tn.esprit.pi.services.AppointmentInterfaceService;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -38,6 +42,30 @@ public class AppoitmentController {
     }
 
 
+    // find by date
+
+    @GetMapping("/getByDate/{date}")
+    public ResponseEntity<List<Appointment>> getAppointmentsByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
+
+        return new ResponseEntity<List<Appointment>>(appointmentService.findAllByDate(date), HttpStatus.OK);
+    }
+// find defore date for sending mail
+
+    @GetMapping("/getByDateBefore")
+    public List<Appointment> getAppointmentsBeforeDate(   @RequestParam("day") Double day) {
+       return  appointmentService.findAllByDateBefore(day);
+
+    }
+
+    /*@GetMapping("/getByDateBefore")
+    public ResponseEntity<List<Appointment>> getAppointmentsBeforeDate() {
+        LocalDate date= LocalDate.now().plusDays(3);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = date.format(formatter);
+        Date date2 = (Date) formatter.parse(formattedDate);
+        return new ResponseEntity<List<Appointment>>(appointmentService.findAllByDateBefore(date2), HttpStatus.OK);
+    }*/
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable("id")Long id_appointment){
         appointmentService.delete(id_appointment);
@@ -47,13 +75,16 @@ public class AppoitmentController {
 
     @PutMapping("/update")
     public ResponseEntity<Appointment> updateAppointment( @RequestBody Appointment appointment){
-
-
-
-
         appointmentService.save(appointment);
         return new ResponseEntity<Appointment>(appointment, HttpStatus.OK);
 
     }
+
+
+    @GetMapping("/countApp")
+        public int countAppointment(@RequestParam("date")  @DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
+        return appointmentService.countAppointmen(date);
+
+        }
 
 }
