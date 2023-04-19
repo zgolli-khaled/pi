@@ -1,6 +1,7 @@
 package tn.esprit.pi.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,15 +15,17 @@ import java.util.Set;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+
     private Long idRole;
 
-    @Enumerated()
-    @Column(name = "ROLE")
+    @Enumerated(EnumType.STRING)
+
     private TypeRole role;
 
 
-    @OneToMany(mappedBy="role")
+
+
+    @OneToMany(mappedBy="role" )
     private Set<User> Users;
 
 
