@@ -29,6 +29,7 @@ public class Chambre {
     private String status;
 
     @OneToOne
+    @JoinColumn(name="id_user")
     private User user;
 
 
