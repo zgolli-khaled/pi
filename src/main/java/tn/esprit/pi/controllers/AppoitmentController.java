@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi.entities.Appointment;
 import tn.esprit.pi.services.AppointmentInterfaceService;
 import org.springframework.format.annotation.DateTimeFormat;
+import tn.esprit.pi.services.EmailSenderService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,9 +19,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/appointment")
-public class AppoitmentController {
+public class    AppoitmentController {
     @Autowired
     AppointmentInterfaceService appointmentService;
+
+    @Autowired
+    private EmailSenderService emailService;
 
 
     @GetMapping("/all")
@@ -86,5 +91,20 @@ public class AppoitmentController {
         return appointmentService.countAppointmen(date);
 
         }
+
+    @PostMapping("/send/{mail}")
+    ResponseEntity<String> sendEmail(@PathVariable (value = "mail") String emailDto){
+
+
+        String to = emailDto;
+        String subject = "rendez vous ";
+        String body="test";
+        emailService.sendEmail(emailDto,body,subject);
+        return ResponseEntity.ok("Email sent successfully.");
+
+
+    }
+
+
 
 }
