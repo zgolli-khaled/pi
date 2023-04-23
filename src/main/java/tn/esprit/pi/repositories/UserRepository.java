@@ -1,12 +1,9 @@
 package tn.esprit.pi.repositories;
 
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import tn.esprit.pi.entities.DossierMedical;
+import tn.esprit.pi.entities.User;
 
 @Repository
-public interface DossierMedicalRepository  extends JpaRepository<DossierMedical,Long> {
-
-
+public interface UserRepository extends JpaRepository<User, Long> {
 }

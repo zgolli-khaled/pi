@@ -1,9 +1,6 @@
 package tn.esprit.pi.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,34 +17,34 @@ import java.util.Set;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @Column(name = "ID")
     private Long idUser;
 
-
+    @Column(name = "NOM")
     private String nom;
 
-
+    @Column(name = "PRENOM")
     private String prenom;
 
-
+    @Column(name = "NUMERO")
     private String numero;
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern="yyy-mm-dd")
-
+    @Column(name = "BIRTHDAY")
     private Date birthday;
 
-
+    @Column(name = "ADDRESS")
     private String address;
 
-
+    @Column(name = "AGE")
     private int age;
 
-
+    @Column(name = "CIN")
     private String cin;
 
 
-    @Column(nullable= true)
+    @Column(nullable= true ,name = "SEPECIALITE")
     private String specialite;
 
 
@@ -58,9 +55,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy="user")
     private Set<Payment> Payments;
 
-    @OneToMany(mappedBy="user" ,fetch = FetchType.LAZY)
-    //@JsonManagedReference
-    @JsonIgnore
+    @OneToMany(mappedBy="user")
     private Set<Appointment> Appointments;
 
 
@@ -75,8 +70,7 @@ public class User implements Serializable {
     private Pharmacie pharmacie;
 
 
-    @OneToOne(cascade = CascadeType.REMOVE ,mappedBy = "user")
-    @JsonIgnore
+    @OneToOne(cascade = CascadeType.REMOVE)
     private DossierMedical dossierMedical;
 
 
