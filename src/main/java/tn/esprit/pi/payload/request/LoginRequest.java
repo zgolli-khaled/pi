@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class LoginRequest {
 	@NotBlank
-  private String nom;
+  private String username;
 
 	@NotBlank
 	private String password;

@@ -49,7 +49,7 @@ public class User implements Serializable {
     private String numero;
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern="yyy-mm-dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "BIRTHDAY")
     private Date birthday;
 
@@ -100,12 +100,18 @@ public class User implements Serializable {
     private Set<Prescription> Prescriptions;
 
 
-    public User(String nom, String email, String password) {
+
+    public User(String nom, String email, String cin, String numero, String address, String prenom, int age, Date birthday,String username, String password) {
         super();
         this.nom = nom;
         this.email = email;
         this.password = password;
-
-
+        this.address= address;
+        this.age=age ;
+        this.numero = numero;
+        this.cin=cin ;
+        this.prenom= prenom ;
+        this.birthday=birthday;
+        this.username=username;
     }
 }

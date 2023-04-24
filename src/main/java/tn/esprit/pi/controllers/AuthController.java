@@ -52,8 +52,9 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
+        System.out.println(loginRequest.getUsername()+ " "+ loginRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getNom(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -86,7 +87,9 @@ public class AuthController {
 
         // Create new user's account
         User user = new User(signUpRequest.getNom(),
-                signUpRequest.getEmail(),
+                signUpRequest.getEmail(), signUpRequest.getCin(), signUpRequest.getNumero(),
+                signUpRequest.getAddress(), signUpRequest.getPrenom(),signUpRequest.getAge(),signUpRequest.getBirthday(),
+                signUpRequest.getUsername(),
                 encoder.encode(signUpRequest.getPassword()));
 
         Set<String> strRoles = signUpRequest.getRole();
@@ -98,6 +101,7 @@ public class AuthController {
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
+                System.out.println(signUpRequest.getBirthday());
                 switch (role) {
                     case "ADMIN":
                         Role adminRole = roleRepository.findByName(TypeRole.ADMIN)
