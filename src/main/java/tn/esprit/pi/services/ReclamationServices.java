@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import tn.esprit.pi.Interfaces.Ireclamation;
 import tn.esprit.pi.entities.Reclamation;
 import tn.esprit.pi.entities.Status;
+import tn.esprit.pi.entities.User;
 import tn.esprit.pi.repositories.ReclamationRepo;
+import tn.esprit.pi.repositories.UserRepo;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,13 +18,19 @@ import java.util.Optional;
 @Service
 public class ReclamationServices implements Ireclamation {
     @Autowired
+    private EmailSenderService senderService;
+    @Autowired
     ReclamationRepo reclamationRepo;
+    @Autowired
+    UserRepo userRepo;
     @Override
-    public ResponseEntity<Reclamation> createReclamation(Reclamation reclamation) {
+    public ResponseEntity<Reclamation> createReclamation(Reclamation reclamation , Long id) {
 
         try{
+            User user = userRepo.findById(id).orElse(null);
             reclamation.setStatus(Status.non_traitée);
             reclamation.setDate(LocalDateTime.now());
+            reclamation.setUser(user);
             reclamationRepo.save(reclamation);
             return new ResponseEntity<>(reclamation, HttpStatus.CREATED);
         }
@@ -89,6 +97,35 @@ catch (Exception exception) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Reclamation> endDiscussion(Long id) {
+        try{
+            Reclamation reclamation =reclamationRepo.findById(id).orElse(null);
+            reclamation.setStatus(Status.traitée);
+            reclamationRepo.save(reclamation);
+            String email = reclamation.getUser().getAddress();
+            senderService.sendSimpleEmail(email,
+                    "Votre reclamatioin a été traitéé avec Succées!",
+                    "Reclamation"
+                    );
+
+            return new ResponseEntity<>(reclamation,HttpStatus.OK);
+        }
+        catch(Exception e){return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
+
+    }
+
+    @Override
+    public ResponseEntity<Integer> countAllByStatus(Status status) {
+
+        try {
+            int i= reclamationRepo.countAllByStatus(status);
+            return new ResponseEntity<>(i,HttpStatus.OK);
+        }catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

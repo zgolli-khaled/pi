@@ -6,8 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi.Interfaces.Ireclamation;
 import tn.esprit.pi.entities.Reclamation;
+import tn.esprit.pi.entities.Status;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/reclamation")
@@ -15,9 +18,9 @@ public class ReclamationController {
     @Autowired
     Ireclamation ireclamation;
     @PostMapping("/createReclamation")
-    public ResponseEntity<Reclamation> createReclamation (@RequestBody Reclamation reclamation)
+    public ResponseEntity<Reclamation> createReclamation (@RequestBody Reclamation reclamation, Long id)
     {
-        return ireclamation.createReclamation(reclamation);
+        return ireclamation.createReclamation(reclamation, id);
     }
     @DeleteMapping ("/deleteReclamation/{id}")
     public ResponseEntity <HttpStatus> deleteReclamation (@PathVariable Long id)
@@ -40,5 +43,19 @@ public class ReclamationController {
     {
         return ireclamation.DisplayReclamationByID(id);
     }
+    @PutMapping("/ended/{id}")
+    public ResponseEntity<Reclamation> endDisc(@PathVariable Long id){
+        return ireclamation.endDiscussion(id);
+    }
 
-}
+    @GetMapping("/statistiques")
+
+    public ResponseEntity<Map<String,Object>> Statistique() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("Nombre des reclamations traitées ", ireclamation.countAllByStatus(Status.traitée));
+        response.put("Nombre des reclamations en cours de traitement", ireclamation.countAllByStatus(Status.encours));
+        response.put("Nombre des reclamations non traitées", ireclamation.countAllByStatus(Status.non_traitée));
+        return new ResponseEntity<>(response,HttpStatus.OK);}
+
+
+    }
