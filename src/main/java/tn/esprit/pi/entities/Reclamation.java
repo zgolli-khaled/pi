@@ -37,7 +37,7 @@ public class Reclamation {
     @Column(name = "DATE" , columnDefinition = "TIMESTAMP")
     LocalDateTime date;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonIgnore
     User user;
 }

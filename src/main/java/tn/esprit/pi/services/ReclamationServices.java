@@ -5,9 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tn.esprit.pi.Interfaces.Ireclamation;
+import tn.esprit.pi.entities.Discussion;
 import tn.esprit.pi.entities.Reclamation;
 import tn.esprit.pi.entities.Status;
 import tn.esprit.pi.entities.User;
+import tn.esprit.pi.repositories.DiscussionRepo;
 import tn.esprit.pi.repositories.ReclamationRepo;
 import tn.esprit.pi.repositories.UserRepo;
 
@@ -20,6 +22,8 @@ public class ReclamationServices implements Ireclamation {
     @Autowired
     private EmailSenderService senderService;
     @Autowired
+    private DiscussionRepo discussionRepo;
+    @Autowired
     ReclamationRepo reclamationRepo;
     @Autowired
     UserRepo userRepo;
@@ -31,7 +35,15 @@ public class ReclamationServices implements Ireclamation {
             reclamation.setStatus(Status.non_traitée);
             reclamation.setDate(LocalDateTime.now());
             reclamation.setUser(user);
-            reclamationRepo.save(reclamation);
+           Reclamation rec1 = reclamationRepo.save(reclamation);
+
+            Discussion discussion = new Discussion();
+            discussion.setReclamation(rec1);
+            discussion.setMsg(rec1.getDescription());
+            discussion.setUser(userRepo.findById(rec1.getUser().getIdUser()).orElse(null));
+            discussion.setDate(LocalDateTime.now());
+            discussionRepo.save(discussion);
+
             return new ResponseEntity<>(reclamation, HttpStatus.CREATED);
         }
         catch (Exception exception){

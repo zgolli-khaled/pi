@@ -14,11 +14,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/reclamation")
+@CrossOrigin(origins = {"http://localhost:4200"}, maxAge = 3600, allowCredentials="true")
 public class ReclamationController {
     @Autowired
     Ireclamation ireclamation;
-    @PostMapping("/createReclamation")
-    public ResponseEntity<Reclamation> createReclamation (@RequestBody Reclamation reclamation, Long id)
+    @PostMapping("/createReclamation/{id}")
+    public ResponseEntity<Reclamation> createReclamation (@RequestBody Reclamation reclamation, @PathVariable Long id)
     {
         return ireclamation.createReclamation(reclamation, id);
     }

@@ -26,11 +26,9 @@ public class Discussion implements Serializable {
     @Column(columnDefinition = "TIMESTAMP")
     LocalDateTime date ;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
+    @ManyToOne
     User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
+    @ManyToOne
     Reclamation reclamation;
 }
