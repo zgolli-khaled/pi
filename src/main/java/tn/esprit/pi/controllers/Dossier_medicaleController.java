@@ -60,6 +60,11 @@ public class Dossier_medicaleController implements DossierApi {
         return dossier_MedicalService.Search(keyword);
     }
 
+    @Override
+    public List<Dossier_Medical> Filter_By_date_desc() {
+        return dossier_MedicalService.Filter_By_date_desc();
+    }
+
 
     @Override
     public void delete(Long id) {

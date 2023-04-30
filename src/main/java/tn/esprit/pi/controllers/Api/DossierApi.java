@@ -26,6 +26,8 @@ public interface DossierApi {
 
     @GetMapping(value = "/dossier/Search/{keyword}")
     List<Dossier_Medical> Search(@PathVariable("keyword") String keyword );
+    @GetMapping(value = "/dossier/DateFilter")
+    List<Dossier_Medical> Filter_By_date_desc();
 
     @DeleteMapping("/dossier/{id}" )
     void delete(@PathVariable("id") Long id);

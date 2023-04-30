@@ -38,8 +38,9 @@ public class Dossier_Medical implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "dossier_medical", cascade = CascadeType.ALL)
+    @OneToMany
     private List<Prescription> prescriptions;
+
 
 
     public String toSearchString() {

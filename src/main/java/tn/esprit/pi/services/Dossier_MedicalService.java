@@ -15,5 +15,6 @@ public interface Dossier_MedicalService {
       List<Dossier_Medical>find_By_Patient_Name(String patient_name);
 
       List<Dossier_Medical> Search(String keyword);
+      List<Dossier_Medical> Filter_By_date_desc ();
 
 }

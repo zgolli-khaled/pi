@@ -75,7 +75,10 @@ public class Dossier_MedicalServiceImpl implements Dossier_MedicalService {
         return dossierMedicals;
     }
 
-
+    @Override
+    public List<Dossier_Medical> Filter_By_date_desc() {
+        return dossier_MedicalRepository.List_By_Last_Date();
+    }
 
 
 }

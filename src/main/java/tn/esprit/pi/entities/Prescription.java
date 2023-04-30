@@ -9,9 +9,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -26,15 +27,17 @@ public class Prescription implements Serializable {
 
     private String Title;
 
-    @Temporal(TemporalType.TIMESTAMP )
+    @Temporal(TemporalType.TIMESTAMP)
     private Date datecreation;
 
-    private  String content;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<treatment> treatments;
+
+
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "Dossier_Medical_id" )
-    @JsonIgnoreProperties("prescriptions")
-    private Dossier_Medical dossier_medical;
-
+    private Dossier_Medical dossierMedical;
 
 }
+
