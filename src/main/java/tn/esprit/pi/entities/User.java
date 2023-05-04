@@ -1,46 +1,93 @@
 package tn.esprit.pi.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
-import tn.esprit.pi.entities.Enumeration.RoleType;
-import tn.esprit.pi.entities.Enumeration.genderType;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String first_name;
-    private String last_name;
-    private  String CIN ;
-    private  String img_url;
-    //@Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date birthdate;
-    private String adress;
-    private String phone_nbr;
-    private String email_addr;
-    @Enumerated(EnumType.STRING)
-    private genderType gender;
-    @Enumerated(EnumType.STRING)
-    private RoleType role;
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "dossier_medical_id")
-    private Dossier_Medical dossier_medical;
+    @Column(name = "ID")
+    private Long idUser;
+
+    @Column(name = "NOM")
+    private String nom;
+
+    @Column(name = "PRENOM")
+    private String prenom;
+
+    @Column(name = "NUMERO")
+    private String numero;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern="yyy-mm-dd")
+    @Column(name = "BIRTHDAY")
+    private Date birthday;
+
+    @Column(name = "ADDRESS")
+    private String address;
+
+    @Column(name = "AGE")
+    private int age;
+
+    @Column(name = "CIN")
+    private String cin;
+
+
+    @Column(nullable= true ,name = "SEPECIALITE")
+    private String specialite;
+
+
+
+    @ManyToOne
+    private Role role;
+
+    @OneToMany(mappedBy="user")
+    private Set<Payment> Payments;
+
+    @OneToMany(mappedBy="user")
+    private Set<Appointment> Appointments;
+
+
+    @OneToOne(mappedBy = "user")
+    private Chambre chambre;
+
+    @OneToMany(mappedBy = "user")
+    private  Set<Reclamation> Reclamations;
+
+
+    @ManyToOne
+    private Pharmacie pharmacie;
+
+
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private DossierMedical dossierMedical;
+
+
+    @OneToMany(cascade = CascadeType.REMOVE ,mappedBy = "user")
+    private Set<Prescription> Prescriptions;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
