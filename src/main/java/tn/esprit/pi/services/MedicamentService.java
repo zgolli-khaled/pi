@@ -1,6 +1,8 @@
 package tn.esprit.pi.services;
 
 import lombok.AllArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import tn.esprit.pi.entities.Medicament;
 import tn.esprit.pi.repositories.MedicamentRepo;
@@ -11,6 +13,7 @@ import java.util.List;
 public class MedicamentService implements IMedicament{
 
     public MedicamentRepo medicamentRepo;
+    private JavaMailSender emailSender;
 
     @Override
     public Medicament addMedicament(Medicament medicament) {
@@ -45,4 +48,27 @@ public class MedicamentService implements IMedicament{
         medicamentRepo.delete(medicament);
 
     }
+
+    @Override
+    public List<Medicament> advancedSearch(String libelle,Float prix) {
+        if (libelle == null && prix == null ) {
+            return getAllMedicaments();
+        } else if (libelle != null && prix == null  ) {
+            return medicamentRepo.findMedicamentByLibelle(libelle);
+        } else if (libelle == null && prix != null ) {
+            return medicamentRepo.findMedicamentByPrix(prix);
+        } else {
+            return medicamentRepo.findMedicamentByLibelleAndPrix(libelle,prix);
+        }
+    }
+    @Override
+    public void sendEmail(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        emailSender.send(message);
+    }
+
+
 }
