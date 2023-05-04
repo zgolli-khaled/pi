@@ -37,7 +37,7 @@ public class Dossier_MedicalServiceImpl implements Dossier_MedicalService {
     public List<Dossier_Medical> find_By_Patient_Name(String patient_name) {
         List<Dossier_Medical> dossierMedicals = new ArrayList<>();
         for (Dossier_Medical dossierPatient : dossier_MedicalRepository.findAll()) {
-            if (dossierPatient.getUser().getFirst_name().equals(patient_name)) {
+            if (dossierPatient.getUser().getNom().equals(patient_name)) {
                 dossierMedicals.add(dossierPatient);
             }
         }

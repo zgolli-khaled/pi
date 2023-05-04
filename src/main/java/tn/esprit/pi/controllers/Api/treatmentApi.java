@@ -1,9 +1,7 @@
 package tn.esprit.pi.controllers.Api;
 
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.pi.entities.Prescription;
 import tn.esprit.pi.entities.treatment;
 
 import java.util.List;

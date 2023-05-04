@@ -34,18 +34,18 @@ public class Dossier_Medical implements Serializable {
 
 
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+
 
     @OneToMany
     private List<Prescription> prescriptions;
 
+    @OneToOne
+    private User user;
 
 
     public String toSearchString() {
-        return motif_admission + " " + antecedents + " " + datecreation + " " +getUser().getFirst_name()+""
-                +getUser().getCIN()+getUser().getAdress()+getUser().getLast_name()+getUser().getPhone_nbr() /* other fields */ ;
+        return motif_admission + " " + antecedents + " " + datecreation + " " +getUser().getNom()+""
+                +getUser().getCin()+getUser().getAddress()+getUser().getPrenom()+getUser().getNumero() /* other fields */ ;
     }
 
 }

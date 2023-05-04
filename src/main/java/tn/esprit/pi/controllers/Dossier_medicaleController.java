@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.pi.controllers.Api.DossierApi;
 import tn.esprit.pi.entities.Dossier_Medical;
 import tn.esprit.pi.services.Dossier_MedicalService;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @Slf4j
 public class Dossier_medicaleController implements DossierApi {
@@ -74,12 +75,8 @@ public class Dossier_medicaleController implements DossierApi {
     @Override
     public ResponseEntity<Dossier_Medical> updatedossier( Long id,  Dossier_Medical dossier){
         Dossier_Medical dossier0 = dossier_MedicalService.findById(id);
-         Long id_patient = dossier0.getUser().getId();
+         Long id_patient = dossier0.getUser().getIdUser();
 
-
-        if(dossier0 == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
 
         try {
             dossier0.setMotif_admission(dossier.getMotif_admission());

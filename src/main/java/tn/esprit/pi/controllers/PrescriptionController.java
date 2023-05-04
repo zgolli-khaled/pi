@@ -7,12 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pi.controllers.Api.PrescriptionApi;
 import tn.esprit.pi.entities.Prescription;
-import tn.esprit.pi.entities.treatment;
 import tn.esprit.pi.services.PrescriptionService;
 import tn.esprit.pi.services.treatmentService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @Slf4j
 public class PrescriptionController implements PrescriptionApi {

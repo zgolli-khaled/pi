@@ -1,10 +1,9 @@
 package tn.esprit.pi.controllers.Api;
 
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import tn.esprit.pi.entities.Prescription;
-import tn.esprit.pi.entities.treatment;
 
 import java.util.List;
 

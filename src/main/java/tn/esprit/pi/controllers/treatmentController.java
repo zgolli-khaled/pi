@@ -2,15 +2,14 @@ package tn.esprit.pi.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import tn.esprit.pi.controllers.Api.treatmentApi;
-import tn.esprit.pi.entities.Prescription;
 import tn.esprit.pi.entities.treatment;
 import tn.esprit.pi.services.treatmentService;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @Slf4j
 public class treatmentController implements treatmentApi {
