@@ -14,4 +14,7 @@ public interface IMedicament {
     Medicament retrieveMedicament(int idMed);
 
     void removeMedicament(Medicament medicament);
+
+    List<Medicament> advancedSearch(String libelle,Float prix);
+    void sendEmail(String to, String subject, String body);
 }
