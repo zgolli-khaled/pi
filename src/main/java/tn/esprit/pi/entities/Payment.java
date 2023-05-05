@@ -2,6 +2,7 @@ package tn.esprit.pi.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,6 +29,7 @@ public class Payment {
     private double montant;
 
     @ManyToOne
+    @JoinColumn(name="id_user")
     private User user;
 
 
