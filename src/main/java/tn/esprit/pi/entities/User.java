@@ -65,6 +65,7 @@ public class User implements Serializable {
 
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private Chambre chambre;
 
     @OneToMany(mappedBy = "user")
