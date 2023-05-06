@@ -1,16 +1,21 @@
 package tn.esprit.pi.controllers;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,6 +32,8 @@ import tn.esprit.pi.payload.response.MessageResponse;
 import tn.esprit.pi.repositories.RoleRepository;
 import tn.esprit.pi.repositories.UserRepository;
 import tn.esprit.pi.security.jwt.JwtUtils;
+import tn.esprit.pi.services.IAuthService;
+
 import tn.esprit.pi.services.UserDetailsImpl;
 
 
@@ -34,9 +41,13 @@ import tn.esprit.pi.services.UserDetailsImpl;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    @Autowired
+    private JavaMailSender emailSender;
     @Autowired
     AuthenticationManager authenticationManager;
-
+   /* @Autowired
+    IAuthService authService;*/
     @Autowired
     UserRepository userRepository;
 
@@ -52,7 +63,7 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-        System.out.println(loginRequest.getUsername()+ " "+ loginRequest.getPassword());
+        System.out.println(loginRequest.getUsername() + " " + loginRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -64,12 +75,14 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
+
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles));
     }
+
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
@@ -84,24 +97,26 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
+        String confirmationCode = generateConfirmationCode();
 
+      /*  SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(signUpRequest.getEmail());
+        message.setSubject("Account Confirmation");
+        message.setText("Your confirmation code is: " + confirmationCode);
+        emailSender.send(message);*/
         // Create new user's account
         User user = new User(signUpRequest.getNom(),
                 signUpRequest.getEmail(), signUpRequest.getCin(), signUpRequest.getNumero(),
-                signUpRequest.getAddress(), signUpRequest.getPrenom(),signUpRequest.getAge(),signUpRequest.getBirthday(),
+                signUpRequest.getAddress(), signUpRequest.getPrenom(), signUpRequest.getAge(), signUpRequest.getBirthday(),
                 signUpRequest.getUsername(),
                 encoder.encode(signUpRequest.getPassword()));
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
 
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName(TypeRole.PASTIENT)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
+
             strRoles.forEach(role -> {
-                System.out.println(signUpRequest.getBirthday());
+                System.out.println(signUpRequest.getRole());
                 switch (role) {
                     case "ADMIN":
                         Role adminRole = roleRepository.findByName(TypeRole.ADMIN)
@@ -109,31 +124,57 @@ public class AuthController {
                         roles.add(adminRole);
 
                         break;
-                    case "GEST":
+                    case "GESTIONNAIRE":
                         Role GESTIONNAIRErole = roleRepository.findByName(TypeRole.GESTIONNAIRE)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(GESTIONNAIRErole);
 
                         break;
+                    case "PATIENT":
+                        Role PATIENTrole = roleRepository.findByName(TypeRole.PATIENT)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(PATIENTrole);
 
-                    case "MED":
+                        break;
+
+                    case "MEDECIN":
                         Role MEDECINrole = roleRepository.findByName(TypeRole.MEDECIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(MEDECINrole);
 
                         break;
 
-                    default:
-                        Role userRole = roleRepository.findByName(TypeRole.PASTIENT)
+                   /* default:
+                        Role userRole = roleRepository.findByName(TypeRole.PATIENT)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
+                        roles.add(userRole);*/
                 }
             });
-        }
+
 
         user.setRoles(roles);
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
+
+    private String generateConfirmationCode() {
+        // Generate a random alphanumeric string
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        int length = 6;
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(chars.length());
+            sb.append(chars.charAt(index));
+        }
+        return sb.toString();
+    }
+
+ /*   @PostMapping("/resetpw")
+    public ResponseEntity<MessageResponse> resetPassword(@RequestBody String email) {
+        return authService.resetPassword(email);
+    }*/
+
 }
