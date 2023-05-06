@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/appointment")
 public class    AppoitmentController {
@@ -104,6 +105,7 @@ public class    AppoitmentController {
 
 
     }
+
 
 
 
