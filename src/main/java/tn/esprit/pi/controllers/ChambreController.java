@@ -11,6 +11,7 @@ import tn.esprit.pi.services.ChambreInterfaceService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/chambre")
 public class ChambreController {
@@ -48,6 +49,10 @@ public class ChambreController {
         chambreService.save(chambre);
         return new ResponseEntity<Chambre>(chambre, HttpStatus.OK);
 
+    }
+    @PutMapping("/affecterch/{ch}/{id}")
+    public void affecterchambre(@PathVariable Long ch,@PathVariable Long id) {
+        chambreService.affecterchambre(ch,id);
     }
 
 

@@ -11,5 +11,8 @@ public interface ChambreInterfaceService {
     public Chambre findById(Long id);
     public void delete(Long id);
 
+    void affecterchambre(Long idch , Long iduser);
+
+
 
 }
