@@ -101,12 +101,12 @@ public class ForgotPasswordController {
 
     @PostMapping("/reset_password")
     @ResponseBody
-    public ResponseEntity<?> processResetPassword(@RequestBody String password,HttpServletRequest request) {
+    public ResponseEntity<?> processResetPassword(HttpServletRequest request) {
         String token = request.getParameter("token");
-
+        String password = request.getParameter("password");
 
         User user = UserService.getByResetPasswordToken(token);
-        System.out.println(user);
+
         if (user == null) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "Invalid Token"));
         } else {
@@ -114,6 +114,8 @@ public class ForgotPasswordController {
 
             return ResponseEntity.ok(Collections.singletonMap("message", "You have successfully changed your password."));
         }
+    }
 
 
-}}
+
+}
