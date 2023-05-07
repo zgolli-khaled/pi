@@ -13,8 +13,14 @@ import tn.esprit.pi.repositories.DiscussionRepo;
 import tn.esprit.pi.repositories.ReclamationRepo;
 import tn.esprit.pi.repositories.UserRepo;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -141,4 +147,9 @@ catch (Exception exception) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
+
+
 }
