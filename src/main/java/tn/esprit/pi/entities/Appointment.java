@@ -17,27 +17,27 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idApp;
 
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern="yyy-mm-dd")
-
-    private Date dateApp;
 
 
+    private String dateApp;
 
-    @Temporal(TemporalType.TIME)
-    @JsonFormat(pattern="hh:mm:ss")
+    private String state;
 
-    private Date heureDebut;
 
-    @Temporal(TemporalType.TIME)
-    @JsonFormat(pattern="hh:mm:ss")
 
-    private Date heureFin;
+    private String heureDebut;
+
+
+
+
+    private String description;
+
+    private String cin;
 
 
     @ManyToOne
     @JoinColumn(name="id_user")
-   // @JsonBackReference
+    // @JsonBackReference
 
     private User user;
 
