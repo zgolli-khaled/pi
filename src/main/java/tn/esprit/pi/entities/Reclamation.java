@@ -2,34 +2,46 @@ package tn.esprit.pi.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Reclamation {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class Reclamation implements Serializable  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ID")
-    private Long idRec;
+    Long idRec;
 
-    @Column(name ="NOM")
-    private String nom;
+    @Column(name ="objet")
+    String objet;
 
     @Column(name ="DESCRIPTION")
-    private String description;
+    String description;
 
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern="yyy-mm-dd")
-    @Column(name = "DATE")
-    private Date date;
+    @Column(name ="status")
+    @Enumerated(EnumType.STRING)
+    Status status;
 
+
+    @Column(name = "DATE" , columnDefinition = "TIMESTAMP")
+    LocalDateTime date;
 
     @ManyToOne
-    private User user;
+    @JsonIgnore
+    User user;
+
+
 }
