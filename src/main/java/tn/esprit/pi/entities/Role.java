@@ -3,6 +3,7 @@ package tn.esprit.pi.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,10 @@ public class Role {
 
 
 
+
+    @OneToMany(mappedBy="role" )
+    @JsonIgnore
+    private Set<User> Users;
 
 
 }
