@@ -38,4 +38,12 @@ public class UserServices {
         userRepository.save(user);
     }
 
+
+    public User getUserByResetPasswordToken(String token) throws UserNotFoundException {
+        User user = userRepository.findByResetPasswordToken(token);
+        if (user == null) {
+            throw new UserNotFoundException("User not found with the given token");
+        }
+        return user;
+    }
 }

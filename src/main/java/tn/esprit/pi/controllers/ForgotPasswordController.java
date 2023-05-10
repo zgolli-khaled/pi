@@ -20,6 +20,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/pass")
@@ -101,20 +103,33 @@ public class ForgotPasswordController {
 
     @PostMapping("/reset_password")
     @ResponseBody
-    public ResponseEntity<?> processResetPassword(HttpServletRequest request) {
-        String token = request.getParameter("token");
-        String password = request.getParameter("password");
+    public ResponseEntity<?> processResetPassword(@RequestBody Map<String, String> resetRequest) {
+        String token = resetRequest.get("token");
+        String password = resetRequest.get("password");
 
-        User user = UserService.getByResetPasswordToken(token);
+        if(token == null || token.isEmpty()) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Token is required"));
+        }
 
-        if (user == null) {
-            return ResponseEntity.badRequest().body(Collections.singletonMap("message", "Invalid Token"));
-        } else {
+        if(password == null || password.isEmpty()) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Password is required"));
+        }
+
+        try {
+            User user = UserService.getUserByResetPasswordToken(token);
+            if(user == null) {
+                return ResponseEntity.badRequest().body(Collections.singletonMap("error", "Invalid token"));
+            }
+
             UserService.updatePassword(user, password);
 
-            return ResponseEntity.ok(Collections.singletonMap("message", "You have successfully changed your password."));
+
+            return ResponseEntity.ok(Collections.singletonMap("message", "Password has been updated successfully"));
+        } catch (UserNotFoundException ex) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", ex.getMessage()));
         }
     }
+
 
 
 
